@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+body{
+	margin:0px;
+	text-align: center;
+}
+#chat1{
+	width:300px;
+	height:400px;
+	background:skyblue;
+	display:inline-block; /* inline의 특징을 가져, 수평상의 공존 가능, block의 특징으로써 크기 조절 가능*/
+}
+#chat2{
+	width:300px;
+	height:400px;
+	background:orange;
+	display:inline-block;
+}
+textarea{
+	width:96%;
+	height:365px;
+	background:yellow;
+}
+</style>
+<script>
+function enterKey(){
+	if(event.keyCode==13){
+		alert("엔터 누름");
+	}
+}
+
+//문서가 로드된 후에, js에서 태그 요소들을 접근하기 위함
+function init(){
+	alert("문서가 모두 로드되었습니다");
+	//bt.addActionListener(리스너)와 비슷
+	document.getElementById("txt2").addEventListener("keyup", function(e){
+		if(e.keyCode==13){
+			alert("엔터 누름");
+		}
+		//console.log(e.keyCode);  //어떤 키를 눌렀는지 파악
+	});
+}
+
+</script>
+</head>
+<body onLoad="init()">
+	<!--
+		모든 html 요소는 크게 block 형과 inline형으로 나뉜다
+		block 형: 자신이 위치하는 수평공간에 그 누구도 공존을 허용하지 않는다 (ex. div, p)
+			장점 - width, height 크기 지정이 가능하다
+		inline 형: 자신이 위치하는 수평공간에 공존을 허용한다 (ex. span)
+			단점 - width, height 먹히지 않기 때문에, 딱 자신의 컨텐츠만큼만 공간을 확보한다
+	-->
+	<!-- 좌측 채팅창 begin-->
+	<div id=chat1>
+	<textarea readonly>
+	</textarea>
+	<input type="text" onKeyUp="enterKey()">
+	<button> 전송 </button>
+	</div>
+	<!-- 좌측 채팅창 end-->
+
+	<!-- 우측 채팅창 begin-->
+	<div id=chat2>
+	<textarea readonly>
+	</textarea>
+	<input type="text" id="txt2">
+	<button> 전송 </button>	
+	</div>
+	<!-- 우측 채팅창 end-->
+</body>
+</html>

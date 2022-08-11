@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>이미지동적생성</title>
+<script src="./Photo.js"></script>
+</head>
+<script>
+var index=0;
+var imgArray=["img1","img2","img3","img4","img5","img6","img7","img8","img9","img10"]
+function createImage(){
+	//버튼 누를때마다, 미리 준비한 10개의 이미지정보를 이용하여, 하나씩 화면에
+	//동적으로 생성하자
+	if(index>imgArray.length-1){
+		alert("더이상 이미지가 없습니다");
+		return;
+	}
+	var img=document.createElement("img"); //동적으로 img 요소를 DOM으로 생성
+	img.src="../images/"+imgArray[index]+".png";
+	img.style.width=100+"px";
+	img.style.height=100+"px";
+	//문서의 body영역에 부착하기
+	document.body.appendChild(img);
+}
+//html 문서에서 이벤트 연결을 하지 않고, 순수 자바스크립트에서 하는 방법
+//단 효과는 동일하다. 하지만 이렇게 개발해야할 때가 반드시 온다.
+window.addEventListener("load", function(){
+	var bt=document.querySelector("button");
+
+	//버튼에 이벤트연결
+	bt.addEventListener("click", function(){
+		index++;
+		createImage();
+	});
+});
+</script>
+<body>
+	<button>이미지 생성</button>
+</body>
+</html>

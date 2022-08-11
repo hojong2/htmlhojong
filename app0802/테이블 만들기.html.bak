@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>테이블 만들기</title>
+</head>
+<body>
+	<table border ="30px" width ="600px">
+		<tr>
+			<td colspan="2"> 301호 </td> 
+			<td rowspan="2"> 303호 </td> 
+		</tr>
+		<tr>
+			<td> 201호 </td> 
+			<td> 202호 </td> 
+		</tr>
+		<tr>
+			<td> 101호 </td> 
+			<td colspan="2"> 102호 </td> 
+		</tr>
+	</table>
+</body>
+</html>

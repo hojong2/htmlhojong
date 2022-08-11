@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 폼</title>
+    <style>
+        div{
+            margin-bottom: 5px;
+        }
+        #wrapper{
+            width:400px;
+            height: 200;
+            border: 5px solid cyan;
+            margin: auto;
+        }
+
+        input{
+            width: 95%;
+            height: 45px;
+            background:#f0f0f0;
+            font-size: 24px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $("#test").animate({
+                "left":"0px"
+            })
+
+            $("button").click(function(){
+                checkValid();
+            });
+        }); //onload
+    </script>
+    <script>
+        function checkValid(){
+            var user_id = document.getElementById("user_id");
+            var user_pw = document.getElementById("user_pw");
+
+            if(user_id.value<1){
+                alert("아이디를 입력해주세요");
+                user_id.focus();
+                return;
+            }
+
+            if(user_pw.value<1){
+                alert("비밀번호를 입력해주세요");
+                user_pw.focus();
+                return;
+            }
+
+            //제대로 입력을 마친 유저에게는, 서버로 폼 양식을 전송하도록 한다.
+            $("form").attr({
+                "action":"/member/login.jsp",
+                "method":"post"
+            });
+            $("form").submit();
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <div id="wrapper">
+            <div style="position: relative; left:-400px;" id="test">
+                <input id="user_id" type="text" placeholder="input your id">
+            </div>
+            <div>
+                <input id="user_pw" type="password" placeholder="input your password">
+            </div>
+        </div>
+    </form>
+    <div style="text-align:center">
+        <!-- html5에서 제공되는 button 요소는 내부적으로 자동 submit() 처리되어 있어서
+        특히 form 태그로 감쌌을때 개발자가 submit() 호출하지 않아도 자동 전송
+        방지방법: js에서 막는 방법 onSubmit="return값", button요소를 form 태그에서 꺼내버린다.
+        -->
+        <button>로그인</button>
+    </div>
+</body>
+</html>

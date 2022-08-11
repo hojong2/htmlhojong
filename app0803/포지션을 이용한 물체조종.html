@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>포지션을 이용한 물체 조종</title>
+<style>
+body{
+	margin:0px;  /* body태그와 그 안에 들어있는 요소간 마진값 없애기*/
+}
+#bt_up{
+	position:relative;
+	left: 105px;
+}
+#bt_left{
+	position:relative;
+	top:25px;
+}
+#bt_down{
+	position:relative;
+	top:25px;
+}
+#bt_right{
+	position:relative;
+	top:25px;
+}
+#pic{
+	position:absolute;
+	left:50px;
+	top:200px;
+	width:50px;
+}
+#bg{
+	background-image:url(../images/back2.webp);
+	width:1900px;
+	height:1000px;
+}
+</style>
+<script>
+var y=200;  //이미지의 초기 y값
+var x=50;   //이미지의 초기 x값
+var bgx=0;  //배경의 x좌표 초기 값
+var r=0;
+function moveUp(){
+	y=y-10;
+	move();
+}
+function moveRight(){
+	x=x+10;
+	move();
+}
+function moveLeft(){
+	x=x-10;
+	move();
+}
+function moveDown(){
+	y=y+10;
+	move();
+}
+function move(){
+	document.getElementById("pic").style.left=x+"px";
+	document.getElementById("pic").style.top=y+"px";
+}
+
+function moveBg(){
+	bgx=bgx-5;
+	r+=3;
+	document.getElementById("bg").style.backgroundPosition=bgx+"px 0px";
+	//document.getElementById("pic").style.transform="rotate("+r+"deg)";
+	setTimeout("moveBg()", 10);
+}
+
+</script>
+</head>
+<body>
+	<div id="bg">
+	<button id="bt_up" onClick="moveUp()">UP</button>
+	<button id="bt_left" onClick="moveLeft()">LEFT</button>
+	<button id="bt_down" onClick="moveDown()">DOWN</button>
+	<button id="bt_right" onClick="moveRight()">RIGHT</button>
+
+	<img src="../images/scout.png" id="pic">
+	</div>
+</body>
+</html>
+<script>
+	moveBg();
+</script>

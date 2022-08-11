@@ -1,0 +1,18 @@
+JSON(JavaScript Object Notation) : 자바스크립트 객체 표기법
+
+class(데이터자체가 아니라 거푸집) vs JSON(인스턴스 자체)
+	이미 작성된 로직의 재활용		  데이터의 표현
+
+<클래스 선언의 경우>
+class DOG{
+	변수
+	메서드
+}
+
+<JSON 선언의 경우
+사실은 자바의 맵과 유사
+{
+	변수: "데이터"
+}
+
+Eclipse 사용시 더 편의성을 위해, 더이상 installer 버전의 Tomcat X

@@ -1,0 +1,382 @@
+SQL> --현재 접속한 유저가 누구인지 알아본다
+SQL> show user
+USER is "JAVA"
+SQL> --현재 접속한 유저의 보유한 테이블 목록을 조회한다
+SQL> --시스템에 대한 정보이므로, 시스템 테이블을 통해 조회하자
+SQL> --오라클에서는 이러한 시스템 테이블들을 가리켜 딕셔너리라 한다
+SQL> --너무 많다, 암기가 힘들다, 따라서 접두어 규칙이 있다.
+SQL> --접속 계정이 관리자인경우 dba_로 시작, 일반 사용자의 경우 user_
+SQL> --이 외에도 v$로 시작하는것도 많다.
+SQL> select table_name from user_tables;
+
+TABLE_NAME                                                                      
+------------------------------------------------------------                    
+TEST                                                                            
+EMP                                                                             
+DEPT                                                                            
+
+SQL> create table member(
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00904: : invalid identifier 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table member(
+  2  	member_id number primary key
+  3  	, user_id varchar(20)
+  4  	, pass varchar(12)
+  5  	, user_name varchar(20)
+  6  	, email varchar(30)
+  7  	, tel1 char(3);
+  8  	, tel2 char(4);
+  9  	, tel3 char(4);
+ 10  	, social1 char(6)
+ 11  	, social2 char(7)
+ 12  	, gender varchar(2)
+ 13  	, regdate date default sysdate
+ 14* )
+SQL> create table member(
+  2  member_id number primary key
+  3  , user_id varchar(20)
+  4  , pass varchar(12)
+  5  , user_name varchar(20)
+  6  , email varchar(30)
+  7  , tel1 char(3);
+, tel1 char(3)
+             *
+ERROR at line 7:
+ORA-00907: missing right parenthesis 
+
+
+SQL> , tel2 char(4);
+SP2-0734: unknown command beginning ", tel2 cha..." - rest of line ignored.
+SQL> , tel3 char(4);
+SP2-0734: unknown command beginning ", tel3 cha..." - rest of line ignored.
+SQL> , social1 char(6)
+SP2-0734: unknown command beginning ", social1 ..." - rest of line ignored.
+SQL> , social2 char(7)
+SP2-0734: unknown command beginning ", social2 ..." - rest of line ignored.
+SP2-0044: For a list of known commands enter HELP
+and to leave enter EXIT.
+SQL> , gender varchar(2)
+SP2-0734: unknown command beginning ", gender v..." - rest of line ignored.
+SQL> , regdate date default sysdate
+SP2-0734: unknown command beginning ", regdate ..." - rest of line ignored.
+SQL> )
+SP2-0042: unknown command ")" - rest of line ignored.
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table member(
+  2  	member_id number primary key
+  3  	, user_id varchar(20)
+  4  	, pass varchar(12)
+  5  	, user_name varchar(20)
+  6  	, email varchar(30)
+  7  	, tel1 char(3);
+  8  	, tel2 char(4);
+  9  	, tel3 char(4);
+ 10  	, social1 char(6)
+ 11  	, social2 char(7)
+ 12  	, gender varchar(2)
+ 13  	, regdate date default sysdate
+ 14* )
+SQL> /
+	, tel1 char(3);
+	              *
+ERROR at line 7:
+ORA-00911: invalid character 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table member(
+  2  	member_id number primary key
+  3  	, user_id varchar(20)
+  4  	, pass varchar(12)
+  5  	, user_name varchar(20)
+  6  	, email varchar(30)
+  7  	, tel1 char(3)
+  8  	, tel2 char(4)
+  9  	, tel3 char(4)
+ 10  	, social1 char(6)
+ 11  	, social2 char(7)
+ 12  	, gender varchar(2)
+ 13  	, regdate date default sysdate
+ 14* )
+SQL> /
+
+Table created.
+
+SQL> --취미의 경우, 하나의 레코드에 담을 수 없다 (여러건), 따라서 별도의
+SQL> --테이블로 물리적으로 분리시킨다
+SQL> --이때 취미 테이블은 추후 부모테이블과 합쳐서 보여줘야 하는데, 그러기 위해서는
+SQL> --부모 레코드와 연결될 외래키가 존재해야 한다.
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table hobby(
+  2  	hobby_id number primary key
+  3  	, member_id number
+  4  	, hobby_name varchar(20)
+  5  	, constraint fk_member_hobby foreign key(member_id) references member(member_id) 
+  6* )
+SQL> /
+
+Table created.
+
+SQL> --member 테이블에 사용할 시퀀스 만들기
+SQL> --아마 유저를 만들면서 시퀀스에 대한 권한을 주지 않음
+SQL> create sequence seq_member
+  2  increment by 1
+  3  start with 1;
+create sequence seq_member
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> --시스템 계정으로 접속 전환
+SQL> conn system/1234
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> -- 유저 정보 바꾸기
+SQL> grant create sequence to java;
+
+Grant succeeded.
+
+SQL> --다시 일반 유저 접속
+SQL> conn java/1234
+Connected.
+SQL>  create sequence seq_member
+  2    2  increment by 1
+  3  
+SQL> ;
+  1   create sequence seq_member
+  2*   2  increment by 1
+SQL> ;
+  1   create sequence seq_member
+  2*   2  increment by 1
+SQL> show sequence
+SP2-0158: unknown SHOW option "sequence"
+SQL> shoq sequences;
+SP2-0734: unknown command beginning "shoq seque..." - rest of line ignored.
+SQL> show sequences;
+SP2-0158: unknown SHOW option "sequences"
+SQL> show sequence
+SP2-0158: unknown SHOW option "sequence"
+SQL> create sequence seq_member
+  2  increment by 1
+  3  start with 1;
+
+Sequence created.
+
+SQL> --테이블 변경 (컬럼 사이즈 변경)
+SQL> alter table member modify gender varchar(6);
+
+Table altered.
+
+SQL> --회원조회;
+SQL> select * from member;
+
+ MEMBER_ID USER_ID                                  PASS                        
+---------- ---------------------------------------- ------------------------    
+USER_NAME                                                                       
+----------------------------------------                                        
+EMAIL                                                        TEL1   TEL2        
+------------------------------------------------------------ ------ --------    
+TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                       
+-------- ------------ -------------- ------------ --------                      
+         2 junmd8624                                1234                        
+박종호                                                                          
+temp                                                         010    5235        
+8624     476846       6846545        남           22/08/04                      
+                                                                                
+
+SQL> select * from member;
+
+ MEMBER_ID USER_ID                                  PASS                        
+---------- ---------------------------------------- ------------------------    
+USER_NAME                                                                       
+----------------------------------------                                        
+EMAIL                                                        TEL1   TEL2        
+------------------------------------------------------------ ------ --------    
+TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                       
+-------- ------------ -------------- ------------ --------                      
+         2 junmd8624                                1234                        
+박종호                                                                          
+temp                                                         010    5235        
+8624     476846       6846545        남           22/08/04                      
+                                                                                
+
+ MEMBER_ID USER_ID                                  PASS                        
+---------- ---------------------------------------- ------------------------    
+USER_NAME                                                                       
+----------------------------------------                                        
+EMAIL                                                        TEL1   TEL2        
+------------------------------------------------------------ ------ --------    
+TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                       
+-------- ------------ -------------- ------------ --------                      
+         3                                                                      
+                                                                                
+temp                                                         010                
+                                                  22/08/04                      
+                                                                                
+
+ MEMBER_ID USER_ID                                  PASS                        
+---------- ---------------------------------------- ------------------------    
+USER_NAME                                                                       
+----------------------------------------                                        
+EMAIL                                                        TEL1   TEL2        
+------------------------------------------------------------ ------ --------    
+TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                       
+-------- ------------ -------------- ------------ --------                      
+         4 bcpjh8624                                4321                        
+박호종                                                                          
+bcpjh8624@naver.com                                          010    5423        
+4531     548546       1531544        남           22/08/04                      
+                                                                                
+
+SQL> --SQLPlus 툴 자체 명령어
+SQL> --라인 컬럼 크기 조정
+SQL> set line 400;
+SQL> select * from member;
+
+ MEMBER_ID USER_ID                                  PASS                     USER_NAME                                EMAIL                                                        TEL1   TEL2     TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                                                                                                                                                    
+---------- ---------------------------------------- ------------------------ ---------------------------------------- ------------------------------------------------------------ ------ -------- -------- ------------ -------------- ------------ --------                                                                                                                                                   
+         2 junmd8624                                1234                     박종호                                   temp                                                         010    5235     8624     476846       6846545        남           22/08/04                                                                                                                                                   
+         3                                                                                                            temp                                                         010                                                               22/08/04                                                                                                                                                   
+         4 bcpjh8624                                4321                     박호종                                   bcpjh8624@naver.com                                          010    5423     4531     548546       1531544        남           22/08/04                                                                                                                                                   
+
+SQL> set line 700;
+SQL> select * from member;
+
+ MEMBER_ID USER_ID                                  PASS                     USER_NAME                                EMAIL                                                        TEL1   TEL2     TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+---------- ---------------------------------------- ------------------------ ---------------------------------------- ------------------------------------------------------------ ------ -------- -------- ------------ -------------- ------------ --------                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         2 junmd8624                                1234                     박종호                                   temp                                                         010    5235     8624     476846       6846545        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         3                                                                                                            temp                                                         010                                                               22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         4 bcpjh8624                                4321                     박호종                                   bcpjh8624@naver.com                                          010    5423     4531     548546       1531544        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+
+SQL> select * from member;
+
+ MEMBER_ID USER_ID                                  PASS                     USER_NAME                                EMAIL                                                        TEL1   TEL2     TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+---------- ---------------------------------------- ------------------------ ---------------------------------------- ------------------------------------------------------------ ------ -------- -------- ------------ -------------- ------------ --------                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         2 junmd8624                                1234                     박종호                                   temp                                                         010    5235     8624     476846       6846545        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         3                                                                                                            temp                                                         010                                                               22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         4 bcpjh8624                                4321                     박호종                                   bcpjh8624@naver.com                                          010    5423     4531     548546       1531544        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+
+SQL> select * from member;
+
+ MEMBER_ID USER_ID                                  PASS                     USER_NAME                                EMAIL                                                        TEL1   TEL2     TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+---------- ---------------------------------------- ------------------------ ---------------------------------------- ------------------------------------------------------------ ------ -------- -------- ------------ -------------- ------------ --------                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         2 junmd8624                                1234                     박종호                                   temp                                                         010    5235     8624     476846       6846545        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         3                                                                                                            temp                                                         010                                                               22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+         4 bcpjh8624                                4321                     박호종                                   bcpjh8624@naver.com                                          010    5423     4531     548546       1531544        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+
+SQL> --취미 시퀀스 만들기
+SQL> create sequence seq_hobby
+  2  increment by 1
+  3  start with 1;
+
+Sequence created.
+
+SQL> -- 시퀀스 객체는 여러 메서드를 지원하는데 이때 .nextval은 현재 값에서 증가된 값을
+SQL> -- 반환한다면, currval은 현재 세선에서 가장 마지막에 일으킨 시퀀스값을 가져온다
+SQL> -- 이때 동시 사용자에 의해 일으킨 시퀀스 값이 아니다. 각 사용자는 자기 자신이
+SQL> -- 증가시킨 시퀀스 값을 반환 받는다.
+SQL> select seq_member ,currval from dept;
+select seq_member ,currval from dept
+                   *
+ERROR at line 1:
+ORA-00904: "CURRVAL": invalid identifier 
+
+
+SQL> select seq_member .currval from dept;
+select seq_member .currval from dept
+       *
+ERROR at line 1:
+ORA-08002: sequence SEQ_MEMBER.CURRVAL is not yet defined in this session 
+
+
+SQL> insert into member (member_id) values(seq_member .nextval);
+
+1 row created.
+
+SQL> --최종적으로 내가 증가시킨 시퀀스 얻기
+SQL> select seq_member .currval from dept;
+
+   CURRVAL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+----------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+         5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+         5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+         5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+         5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+SQL> select seq_member .currval from dual;
+
+   CURRVAL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+----------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+         5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+SQL> -- 시퀀스 조회시 from 절에 작성할 테이블의 레코드가 1건이어야 하는데,
+SQL> -- 만약 이러한 테이블이 없으면 우리가 만들어야한다.
+SQL> -- 하지만 오라클에서는 이미 우리대신 컬럼과 레코드가 달랑 1개인 dummy테이블을 지원해 준다.
+SQL> select * from dual;
+
+DU                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+--                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+X                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+
+SQL> delete from member;
+
+24 rows deleted.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from member;
+
+ MEMBER_ID USER_ID                                  PASS                     USER_NAME                                EMAIL                                                        TEL1   TEL2     TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+---------- ---------------------------------------- ------------------------ ---------------------------------------- ------------------------------------------------------------ ------ -------- -------- ------------ -------------- ------------ --------                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        28 junmd8624                                1234                     박종호                                   junmd8624@naver.com                                          010    5235     8624     894543       4654654        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        26 junmd8624                                1234                     박종호                                   junmd8624@naver.com                                          010    5235     8624     894543       4654654        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        27 junmd8624                                1234                     박종호                                   junmd8624@naver.com                                          010    5235     8624     894543       4654654        남           22/08/04                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+
+SQL> select * from hobby;
+
+  HOBBY_ID  MEMBER_ID HOBBY_NAME                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+---------- ---------- ----------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+         1         28 운동                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+         2         28 독서                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+         3         28 게임                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+SQL> delete from member;
+delete from member
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (JAVA.FK_MEMBER_HOBBY) violated - child record found 
+
+
+SQL> -- 원래는 member, hobby 테이블은 하나였다. 물리적으로 분리시킨 이유는
+SQL> -- 데이터의 무결성 때문이었다. 하지만 물리적으로 나누어진 테이블은
+SQL> -- 합쳐서 보기가 힘들다. 이때 사용되는 쿼리가 바로 즉 정규화에 의해
+SQL> -- 찢어진 테이블을 마치 하나처럼 보여주는 쿼리를 가리켜 조인(join)이라 한다.
+SQL> select *
+  2  from member, hobby
+  3  where member.member_id=hobby.member_id;
+
+ MEMBER_ID USER_ID                                  PASS                     USER_NAME                                EMAIL                                                        TEL1   TEL2     TEL3     SOCIAL1      SOCIAL2        GENDER       REGDATE    HOBBY_ID  MEMBER_ID HOBBY_NAME                                                                                                                                                                                                                                                                                                                                                                                                                              
+---------- ---------------------------------------- ------------------------ ---------------------------------------- ------------------------------------------------------------ ------ -------- -------- ------------ -------------- ------------ -------- ---------- ---------- ----------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                
+        28 junmd8624                                1234                     박종호                                   junmd8624@naver.com                                          010    5235     8624     894543       4654654        남           22/08/04          1         28 운동                                                                                                                                                                                                                                                                                                                                                                                                                                    
+        28 junmd8624                                1234                     박종호                                   junmd8624@naver.com                                          010    5235     8624     894543       4654654        남           22/08/04          2         28 독서                                                                                                                                                                                                                                                                                                                                                                                                                                    
+        28 junmd8624                                1234                     박종호                                   junmd8624@naver.com                                          010    5235     8624     894543       4654654        남           22/08/04          3         28 게임                                                                                                                                                                                                                                                                                                                                                                                                                                    
+
+SQL> spool off;

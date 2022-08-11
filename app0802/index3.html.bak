@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>나의 웹사이트</title>
+</head>
+<body>
+	이미지 넣기 <br>
+	<img src="https://ssl.pstatic.net/melona/libs/1405/1405575/dc88c147eff7e5a7fbd6_20220729160359888.jpg" width = "200px" ><br>
+	<video >
+		<source src = "https://www.w3schools.com/tags/movie.mp4">
+		
+		</source>
+	</video>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>체크박스 일괄처리</title>
+<style>
+input{
+	display:block;
+}
+</style>
+<script>
+function checkAll(obj){
+	//문서내의 대표체크박스의 상태 조사
+	//var king = document.getElementById("king");
+	var arr = document.getElementsByName("ch");
+	for(var i = 0; i<arr.length; i++)
+		arr[i].checked=obj.checked;
+}
+</script>
+</head>
+<body>
+	<input id="king" type="checkbox" onClick="checkAll(this)">
+
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+	<input type="checkbox" name="ch">
+
+</body>
+</html>

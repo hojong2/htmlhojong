@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OX단어퀴즈</title>
+<style>
+#wrapper{
+	width: 400px;
+	height: 600px;
+	margin: auto;
+}
+
+#word-area{
+	background: red;
+	width: 100%;
+	height: 200px;
+	font-size:100px;
+	text-align: center;
+}
+
+#input-area{
+	background: skyblue;
+	width: 100%;
+	height: 100px;
+}
+#input-area input{
+	border:0px;
+	width: 99%;
+	height: 100%;
+	background: #d5d5d5;
+	font-size: 70px;
+}
+#feedback-area{
+	background: yellow;
+	width: 100%;
+	height: 200px;
+	font-size: 150px;
+	text-align: center;
+}
+#score-area{
+	background: purple;
+	width: 100%;
+	height: 100px;
+	font-size: 85px;
+	text-align: center;
+}
+</style>
+<script>
+//자바스크립트의 built-in Object(내장객체)중 하나인 배열을 생성한다.
+var word= [["가","나","다","라","마","바","사","아","자","차","카","타"],["a","b","c","d","e","f","g","h","i","j","k","l"],["A","B","C","D","E","F","G","H","I","J","K","L"]];
+var index=-1;
+var score =0;
+var level =0;
+
+function showfeedback(str){
+	var feedbackArea=document.getElementById("feedback-area");
+	feedbackArea.innerText=str;
+
+	// 0일 때만 스코어 증가
+	var scoreArea=document.getElementById("score-area");
+	if(str=="O"){
+		score+=10;
+	}
+	scoreArea.innerText=score+"점";
+}
+
+function showtext(){
+	index++;
+	var wordArea=document.getElementById("word-area");
+	if(index==12){
+		level++;
+		index=-1;
+	}
+	wordArea.innerText=word[level][index];
+	if(level==3){
+		alert("클리어");
+	}
+}
+
+function init(){
+	//프로그램이 가동됨과 동시에 배열의 첫번째 단어가 출력되게 하자
+	showtext();
+
+	//텍스트박스에 입력 이벤트 구현하기
+	var inputBox=document.querySelector("#input-area input");
+	inputBox.focus();
+	inputBox.addEventListener("keyup", function(e){
+		if(e.keyCode==13){  //엔터치면
+			//입력한 단어 얻기
+			if(inputBox.value==document.getElementById("word-area").innerText){
+				showtext();  //단어가 일치할 때만 수행
+				showfeedback("O");
+			}
+			else{
+				showfeedback("X");
+			}
+			//유저가 입력한 단어 초기화
+			inputBox.value=""; //length를 0으로
+		}
+	});
+}
+</script>
+</head>
+<body onload="init()">
+	<div id= "wrapper">
+		<div id= "word-area">
+			
+		</div>
+
+		<div  id= "input-area">
+			<input type="text" placeholder="여기에 입력">
+		</div>
+
+		<div id= "feedback-area">
+			
+		</div>
+
+		<div id= "score-area">
+			20
+		</div>
+	</div>
+</body>
+</html>

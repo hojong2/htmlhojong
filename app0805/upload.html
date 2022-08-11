@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>이미지 등록폼</title>
+<style>
+/*selector*/
+textarea{
+	width:99%;
+	height:200px;
+}
+</style>
+<script>
+//유효성 체크
+function checkValid(){
+	var title=document.querySelector("input[name='title']")
+	var spot=document.querySelector("input[name='spot']")
+	var detail=document.querySelector("textarea[name='detail']")
+	var myfile=document.querySelector("input[name='myfile']")
+	if(title.value.length<1){
+		alert("제목을 입력하세요");
+		title.focus();
+		return;
+	}else if(spot.value.length<1){//장소 따지기
+		alert("장소를 입력하세요");
+		spot.focus();
+		return;
+	}else if(detail.value.length<1){//설명 따지기
+		alert("설명을 입력하세요");
+		datail.focus();
+		return;
+	}else if(myfile.value.length<1){//파일 따지기
+		alert("파일 입력하세요");
+		return;
+	}else{
+		//서버에 등록
+		var frm = document.querySelector("form");
+		frm.action="/save.jsp"; //이 업로드 요청을 받을 서버상의 jsp 주소
+		frm.method="post";  //바이너리 파일 때문에, 용량이 크므로 POST 방식으로 전송해야 한다.
+		frm.submit(); //서버에 전송하는 시점
+	}
+}
+function getList(){
+	//등록된 사진의 목록을 조회
+	location.href="/list.jsp"; //js의 링크
+}
+
+window.addEventListener("load", function(){
+	var bt=document.querySelector("#bt");
+	bt.addEventListener("click", function(){
+		checkValid();
+	});
+});
+</script>
+</head>
+<body>
+	<!-- 서버에 폼 양식을 전송시, 만일 텍스트 뿐만 아니라 바이너리 파일이 포함된 경우
+	반드시 반드시 아래의 속성이 지정되어야 한다.-->
+	<form enctype="multipart/form-data">
+		<table width="600px" border="1px" align="center">
+			<tr>
+				<td align="center" colspan="2">관광지 등록</td>
+			</tr>
+			<tr>
+				<td>사진제목</td>
+				<td><input type = "text" name="title"></td>
+			</tr>
+			<tr>
+				<td>장소</td>
+				<td><input type = "text" name="spot"></td>
+			</tr>
+			<tr>
+				<td>사진 설명</td>
+				<td><textarea name="detail"></textarea></td>
+			</tr>
+			<tr>
+				<td>사진</td>
+				<td><input type ="file" name="myfile"></td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					<input id="bt" type ="button" value="등록">
+					<input type ="button" value="목록" onClick="getList()">
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

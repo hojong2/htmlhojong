@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>부드러운 감속도 공식</title>
+<style>
+#box{
+	width:100px;
+	height:100px;
+	background:red;
+}
+</style>
+<script>
+//평상시에는 목표지점을 명시해서, 단번에 건너뛰는 효과가 났었다.
+//하지만, 부드럽게 움직이려면 목표지점에 한꺼번에 다가가지 말고, 야금야금 다가가야 한다. 감속도 공식 적용
+var targetX=500;
+var a=0.1; //다가가는 정도를 표현하는 비율계수(값이 커질수록 투박하고 걸음이 커짐)
+
+function move(){
+	var box=document.getElementById("box");
+	//나의 위치=현재 나의 위치 +a(비율)*(목표지점-현재나의위치);
+	//스타일 시트로 좌표값을 준 후에 스크립트 시트에서 좌표값을 확인해보면 값이 들어가있지 않다
+	parseInt(box.style.left)=parseInt(box.style.left)+(targetX-parseInt(box.style.left))*a+"px";
+	setTimeout("move()",10);
+}
+</script>
+</head>
+<body>
+	<div id="box" onMouseOver="move()" style="position:absolute; left:0px; top:100px"></div>
+</body>
+</html>

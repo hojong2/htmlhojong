@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>레이아웃</title>
+<style>
+/* 모든 html 요소는 우리의 현실과 마찬가지고, 디폴트 포지션으로 상대위치를 적응한다
+즉 특정 요소가 다른 요소에 의해 위치가 변경될 수 있는 특징이 있다
+그러나 CSS를 이용하면, 더 다양한 포지션을 지정할 수 있다.*/
+
+#yellow{
+	position:absolute;
+	left:100px;
+	top:10px;
+}
+</style>
+</head>
+<body>
+	<!-- div는 화면의 영역을 분할하기 위한 태그-->
+	<div style="background:skyblue" id="blue">div blue</div>
+	<div style="background:yellow" id="yellow">div yellow</div>
+	<div style="background:red" id="red">div red</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+-Front 개발
+ html5, css3, Javascript
+ json, JQuery, Bootstrap...React...Node.js
+
+-Javascript
+1. 변수
+2. 연산자
+3. 제어문
+    - 조건문
+    - 반복문
+4. 함수
+5. 배열
+------------------- 절차 지향
+6. 객체
